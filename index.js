@@ -63,6 +63,23 @@ async function run() {
         res.send(result);
     })
 
+    app.get("/cars/mycar",async(req,res)=>{
+        const email = req.query.email;
+        const query = {seller_email: email};
+        const result = await carsCollection.find(query).toArray();
+        res.send(result);
+
+    })
+
+    // car posts api
+
+    app.post('/cars',async(req,res)=>{
+        const saveInfo = req.body;
+        const result = await carsCollection.insertOne(saveInfo);
+        res.send(result);
+    })
+
+
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
     console.log(
