@@ -71,6 +71,28 @@ async function run() {
 
     })
 
+    app.patch("/cars/update/:id",async(req,res)=>{
+        const id = req.params.id;
+        const filter = {_id: new ObjectId(id)};
+        const exsistingInfo = await carsCollection.findOne(filter);
+        const updateDoc = {
+            $set:{
+                price:exsistingInfo.price,
+                available_quantity:exsistingInfo.available_quantity,
+                detail_description:exsistingInfo.detail_description,
+            }
+        }
+        const result = await carsCollection.updateOne(filter,updateDoc);
+        res.send(result);
+    })
+
+    app.delete("/cars/delete/:id",async(req,res)=> {
+        const id = req.params.id;
+        const query = {_id: new ObjectId(id)};
+        const result = await carsCollection.deleteOne(query);
+        res.send(result);
+    })
+
     // car posts api
 
     app.post('/cars',async(req,res)=>{
